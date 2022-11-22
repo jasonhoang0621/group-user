@@ -3,6 +3,7 @@ import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { CheckAuth } from "src/Auth";
 import Login from "src/pages/Login";
+import Register from "src/pages/Register";
 import Authenticated from "./Authed";
 
 const createQueryClient = () => {
@@ -27,6 +28,7 @@ const Root = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route
             path="*"
             element={

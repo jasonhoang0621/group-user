@@ -4,7 +4,6 @@ import "./layout.css";
 
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import logo from "src/assets/images/logo.png";
 import useRouting from "src/hooks/UseRouting";
 import routers from "src/routers";
 const { Header, Sider, Content } = LayoutAntd;
@@ -26,7 +25,7 @@ const Layout = () => {
     <LayoutAntd>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo h-[64px] flex items-center justify-center">
-          <img src={logo} width={100} height={100} alt="logo" />
+          <p className="text-white font-semibold">MIDTERM</p>
         </div>
         <Menu
           theme="dark"
@@ -45,6 +44,8 @@ const Layout = () => {
           className="site-layout-background"
           style={{
             padding: 0,
+            display: "flex",
+            alignItems: "center",
           }}
         >
           {React.createElement(
@@ -54,6 +55,9 @@ const Layout = () => {
               onClick: () => setCollapsed(!collapsed),
             }
           )}
+          <button className="button !bg-[#192812] !p-0 !ml-10">
+            <span>Create group</span>
+          </button>
         </Header>
         <Content
           className="site-layout-background"
