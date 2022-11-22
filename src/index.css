@@ -1,0 +1,19 @@
+@import "~antd/dist/antd.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.ant-table .ant-table-content .ant-table-thead > tr > .ant-table-cell {
+  text-align: center;
+}
+
+.ant-steps-icon .anticon.anticon-check.ant-steps-finish-icon,
+.ant-steps-icon .anticon.anticon-close.ant-steps-error-icon {
+  margin-top: 8px;
+  display: block;
+}
