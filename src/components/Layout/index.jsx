@@ -1,5 +1,5 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout as LayoutAntd, Menu, Modal } from "antd";
+import { Layout as LayoutAntd, Menu } from "antd";
 import "./layout.css";
 
 import React, { useEffect, useState } from "react";

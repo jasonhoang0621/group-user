@@ -1,10 +1,7 @@
-import { Form, Input, InputNumber, notification, Spin } from "antd";
+import { Form, InputNumber, notification, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRegister } from "src/api/user";
-import FacebookIcon from "src/assets/images/facebook.png";
-import GoogleIcon from "src/assets/images/google.png";
 
 const Verify = () => {
   const [form] = useForm();

@@ -11,7 +11,7 @@ export const CheckAuth = ({ children }) => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const [check, setCheck] = useState(false);
-  const { data, isLoading } = useVerify();
+  const { data } = useVerify();
 
   useEffect(() => {
     const token = localStorage.getItem("token") || getCookie("token");
@@ -33,9 +33,9 @@ export const CheckAuth = ({ children }) => {
     verifyAccount();
   }, [check, user, dispatch, navigate, data]);
 
-  // if (!user && !check) {
-  //   return <LoadingScreen />;
-  // }
+  if (!user && !check) {
+    return <LoadingScreen />;
+  }
   if (!user && check) {
     navigate("/login");
   }

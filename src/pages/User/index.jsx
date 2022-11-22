@@ -1,11 +1,8 @@
-import { Button, Modal, notification, Spin, Table } from "antd";
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { Button, Modal, Spin, Table } from "antd";
+import React from "react";
 import { useGetListUser } from "src/api/user";
 
 const User = () => {
-  const user = useSelector((state) => state.auth);
-
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [blockUser, setBlockUser] = React.useState(null);
   const [unblockUser, setUnblockUser] = React.useState(null);
