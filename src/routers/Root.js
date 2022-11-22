@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { CheckAuth } from "src/Auth";
 import Login from "src/pages/Login";
 import Register from "src/pages/Register";
+import Verify from "src/pages/Verify";
 import Authenticated from "./Authed";
 
 const createQueryClient = () => {
@@ -29,6 +30,7 @@ const Root = () => {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify" element={<Verify />} />
           <Route
             path="*"
             element={

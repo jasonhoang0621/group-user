@@ -40,14 +40,7 @@ const Layout = () => {
         />
       </Sider>
       <LayoutAntd className="site-LayoutAntd">
-        <Header
-          className="site-layout-background"
-          style={{
-            padding: 0,
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
+        <Header className="site-layout-background flex items-center justify-between p-0">
           {React.createElement(
             collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
             {
@@ -55,18 +48,11 @@ const Layout = () => {
               onClick: () => setCollapsed(!collapsed),
             }
           )}
-          <button className="button !bg-[#192812] !p-0 !ml-10">
+          <button className="button !bg-[#192812] !p-0 !m-0 !rounded-none">
             <span>Create group</span>
           </button>
         </Header>
-        <Content
-          className="site-layout-background"
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-          }}
-        >
+        <Content className="site-layout-background mx-[16px] my-[24px] p-[24px] min-h-[280px]">
           <Outlet />
         </Content>
       </LayoutAntd>
