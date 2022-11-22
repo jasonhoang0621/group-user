@@ -1,16 +1,16 @@
 import { Button, Modal, notification, Spin, Table } from "antd";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
-import userAPI from "src/api/user";
+import { useGetListUser } from "src/api/user";
 
 const User = () => {
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [data, setData] = React.useState([]);
   const user = useSelector((state) => state.auth);
 
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [blockUser, setBlockUser] = React.useState(null);
   const [unblockUser, setUnblockUser] = React.useState(null);
+
+  const { data, isLoading } = useGetListUser();
 
   const columns = [
     {
@@ -66,81 +66,6 @@ const User = () => {
     },
   ];
 
-  const handleBLockUser = async () => {
-    setIsLoading(true);
-    try {
-      if (blockUser) {
-        const res = await userAPI.blockUser(blockUser.id);
-        if (res?.errorCode) {
-          notification.error({
-            message: "Error",
-            description: res.data || "Something went wrong",
-            duration: 2,
-          });
-          setIsLoading(false);
-          return;
-        }
-        notification.success({
-          message: "Success",
-          description: "User blocked successfully",
-          duration: 2,
-        });
-        setData(
-          data.map((item) =>
-            item.id === blockUser.id ? { ...item, deletedAt: true } : item
-          )
-        );
-        setIsModalVisible(false);
-        setBlockUser(null);
-      } else {
-        const res = await userAPI.unblockUser(unblockUser.id);
-        if (res?.errorCode) {
-          notification.error({
-            message: "Error",
-            description: res.data || "Something went wrong",
-            duration: 2,
-          });
-          setIsLoading(false);
-          return;
-        }
-        notification.success({
-          message: "Success",
-          description: "User unblocked successfully",
-          duration: 2,
-        });
-        setData(
-          data.map((item) =>
-            item.id === unblockUser.id ? { ...item, deletedAt: false } : item
-          )
-        );
-        setIsModalVisible(false);
-        setUnblockUser(null);
-      }
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      notification.error({
-        message: "Error",
-        description: error.message || "Something went wrong",
-        duration: 2,
-      });
-    }
-  };
-
-  useEffect(() => {
-    const getUserData = async () => {
-      setIsLoading(true);
-      const res = await userAPI.getListUser();
-      if (res.errorCode) {
-        setData([]);
-      } else {
-        setData(res.data ?? []);
-      }
-      setIsLoading(false);
-    };
-    getUserData();
-  }, [user]);
-  console.log(data)
   return (
     <Spin spinning={isLoading}>
       <Table columns={columns} dataSource={data} rowKey="id" />
@@ -163,7 +88,7 @@ const User = () => {
           disabled: isLoading,
           type: blockUser ? "danger" : "primary",
         }}
-        onOk={handleBLockUser}
+        // onOk={handleBLockUser}
       >
         {blockUser ? (
           <p>Do you want to block {blockUser?.name}?</p>

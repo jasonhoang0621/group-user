@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import userAPI from "src/api/user";
+import { useVerify } from "src/api/user";
 import LoadingScreen from "src/components/LoadingScreen";
 import { getCookie } from "src/helpers/cookie";
 import { login } from "src/redux/auth";
@@ -11,19 +11,19 @@ export const CheckAuth = ({ children }) => {
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const [check, setCheck] = useState(false);
+  const { data, isLoading } = useVerify();
 
   useEffect(() => {
     const token = localStorage.getItem("token") || getCookie("token");
     const verifyAccount = async () => {
       if (!user && !check) {
         if (token) {
-          const res = await userAPI.verify();
-          if (res.errorCode) {
+          if (data.errorCode) {
             setCheck(false);
             navigate("/login");
           } else {
             setCheck(true);
-            dispatch(login(res.data));
+            dispatch(login(data.data));
           }
         } else {
           setCheck(true);
@@ -31,11 +31,11 @@ export const CheckAuth = ({ children }) => {
       }
     };
     verifyAccount();
-  }, [check, user, dispatch, navigate]);
+  }, [check, user, dispatch, navigate, data]);
 
-  if (!user && !check) {
-    return <LoadingScreen />;
-  }
+  // if (!user && !check) {
+  //   return <LoadingScreen />;
+  // }
   if (!user && check) {
     navigate("/login");
   }

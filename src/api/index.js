@@ -15,6 +15,7 @@ const axiosClient = axios.create({
     // token: apiConfig.token,
   },
   paramsSerializer: (params) => queryString.stringify({ ...params }),
+  timeout: 10000,
 });
 
 axiosClient.interceptors.request.use(async (config) => {
