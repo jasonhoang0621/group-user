@@ -7,6 +7,9 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import useRouting from "src/hooks/UseRouting";
 import routers from "src/routers";
 import CreateGroupModal from "../CreateGroupModal";
+import { UserOutlined } from "@ant-design/icons";
+import ChangePasswordModal from "../ChangePasswordModal";
+import ProfileModal from "../ProfileModal";
 const { Header, Sider, Content } = LayoutAntd;
 
 const Layout = () => {
@@ -16,6 +19,13 @@ const Layout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [activeKey, setActiveKey] = useState(0);
   const [createGroupModal, setCreateGroupModal] = useState(false);
+  const [profileModal, setProfileModal] = useState(false);
+  const [changePasswordModal, setChangePasswordModal] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   useEffect(() => {
     const { pathname } = location;
@@ -50,12 +60,29 @@ const Layout = () => {
               onClick: () => setCollapsed(!collapsed),
             }
           )}
-          <button
-            className="button !bg-[#192812] !p-0 !m-0 !rounded-none"
-            onClick={() => setCreateGroupModal(true)}
-          >
-            <span>Create group</span>
-          </button>
+          <div className="mr-10 mb-2 relative">
+            <UserOutlined className="text-white text-[20px] cursor-pointer hover:opacity-60" />
+            <ul className="block absolute right-0 top-[100%] bg-white z-10 min-w-[170px] shadow-2xl p-0 m-0 list-none">
+              <li
+                className="text-[14px] leading-1 pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
+                onClick={() => setProfileModal(true)}
+              >
+                Profile
+              </li>
+              <li
+                className="text-[14px] pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
+                onClick={() => setChangePasswordModal(true)}
+              >
+                Change password
+              </li>
+              <li
+                className="text-[14px] pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
+                onClick={handleLogout}
+              >
+                Logout
+              </li>
+            </ul>
+          </div>
         </Header>
         <Content className="site-layout-background mx-[16px] my-[24px] p-[24px] min-h-[280px]">
           <Outlet />
@@ -63,6 +90,11 @@ const Layout = () => {
             visible={createGroupModal}
             setVisible={setCreateGroupModal}
           />
+          <ChangePasswordModal
+            visible={changePasswordModal}
+            setVisible={setChangePasswordModal}
+          />
+          <ProfileModal visible={profileModal} setVisible={setProfileModal} />
         </Content>
       </LayoutAntd>
     </LayoutAntd>
