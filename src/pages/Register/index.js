@@ -3,7 +3,8 @@ import { useForm } from "antd/lib/form/Form";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useRegister } from "src/api/user";
-import { login } from "src/redux/auth";
+import FacebookIcon from "src/assets/images/facebook.png";
+import GoogleIcon from "src/assets/images/google.png";
 
 const Register = () => {
   const [form] = useForm();
@@ -73,6 +74,14 @@ const Register = () => {
               </button>
             </div>
           </Form>
+          <div className="flex items-center justify-center mt-5">
+            <span className="rounded-[50%] overflow-hidden cursor-pointer hover:opacity-60">
+              <img src={GoogleIcon} alt="" className="w-[50px] h-[50px]" />
+            </span>
+            <span className="rounded-[50%] overflow-hidden ml-5 cursor-not-allowed">
+              <img src={FacebookIcon} alt="" className="w-[50px] h-[50px]" />
+            </span>
+          </div>
           <div className="text-center mt-5">
             <p>
               Or{" "}

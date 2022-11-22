@@ -1,11 +1,11 @@
-import { Button, Form, Input, notification, Spin } from "antd";
+import { Form, Input, notification, Spin } from "antd";
 import { useForm } from "antd/lib/form/Form";
-import React from "react";
 import { useDispatch } from "react-redux";
-import userAPI, { useLogin } from "src/api/user";
-import { login } from "src/redux/auth";
-import logo from "src/assets/images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
+import { useLogin } from "src/api/user";
+import FacebookIcon from "src/assets/images/facebook.png";
+import GoogleIcon from "src/assets/images/google.png";
+import { login } from "src/redux/auth";
 
 const Login = () => {
   const [form] = useForm();
@@ -57,6 +57,14 @@ const Login = () => {
               </button>
             </div>
           </Form>
+          <div className="flex items-center justify-center mt-5">
+            <span className="rounded-[50%] overflow-hidden cursor-pointer hover:opacity-60">
+              <img src={GoogleIcon} alt="" className="w-[50px] h-[50px]" />
+            </span>
+            <span className="rounded-[50%] overflow-hidden ml-5 cursor-not-allowed">
+              <img src={FacebookIcon} alt="" className="w-[50px] h-[50px]" />
+            </span>
+          </div>
           <div className="text-center mt-5">
             Or{" "}
             <Link
