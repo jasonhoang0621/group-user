@@ -1,11 +1,12 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Layout as LayoutAntd, Menu } from "antd";
+import { Layout as LayoutAntd, Menu, Modal } from "antd";
 import "./layout.css";
 
 import React, { useEffect, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import useRouting from "src/hooks/UseRouting";
 import routers from "src/routers";
+import CreateGroupModal from "../CreateGroupModal";
 const { Header, Sider, Content } = LayoutAntd;
 
 const Layout = () => {
@@ -14,6 +15,7 @@ const Layout = () => {
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
   const [activeKey, setActiveKey] = useState(0);
+  const [createGroupModal, setCreateGroupModal] = useState(false);
 
   useEffect(() => {
     const { pathname } = location;
@@ -48,12 +50,19 @@ const Layout = () => {
               onClick: () => setCollapsed(!collapsed),
             }
           )}
-          <button className="button !bg-[#192812] !p-0 !m-0 !rounded-none">
+          <button
+            className="button !bg-[#192812] !p-0 !m-0 !rounded-none"
+            onClick={() => setCreateGroupModal(true)}
+          >
             <span>Create group</span>
           </button>
         </Header>
         <Content className="site-layout-background mx-[16px] my-[24px] p-[24px] min-h-[280px]">
           <Outlet />
+          <CreateGroupModal
+            visible={createGroupModal}
+            setVisible={setCreateGroupModal}
+          />
         </Content>
       </LayoutAntd>
     </LayoutAntd>
