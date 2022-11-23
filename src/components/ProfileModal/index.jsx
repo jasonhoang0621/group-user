@@ -10,8 +10,13 @@ const ProfileModal = ({ visible, setVisible }) => {
   };
 
   return (
-    <Modal visible={visible} onCancel={() => setVisible(false)} footer={null}>
-      <Form form={form} layout="vertical" className="mt-10">
+    <Modal
+      visible={visible}
+      onCancel={() => setVisible(false)}
+      footer={null}
+      title="Profile"
+    >
+      <Form form={form} layout="vertical">
         <Form.Item name="name">
           <Input className="app-input" placeholder="Name" />
         </Form.Item>

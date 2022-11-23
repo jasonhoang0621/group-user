@@ -61,27 +61,29 @@ const Layout = () => {
             }
           )}
           <div className="mr-10 mb-2 relative">
-            <UserOutlined className="text-white text-[20px] cursor-pointer hover:opacity-60" />
-            <ul className="block absolute right-0 top-[100%] bg-white z-10 min-w-[170px] shadow-2xl p-0 m-0 list-none">
-              <li
-                className="text-[14px] leading-1 pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
-                onClick={() => setProfileModal(true)}
-              >
-                Profile
-              </li>
-              <li
-                className="text-[14px] pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
-                onClick={() => setChangePasswordModal(true)}
-              >
-                Change password
-              </li>
-              <li
-                className="text-[14px] pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
-                onClick={handleLogout}
-              >
-                Logout
-              </li>
-            </ul>
+            <div className="user-icon-header">
+              <UserOutlined className="text-white text-[20px] cursor-pointer hover:opacity-60" />
+              <ul className="hidden absolute right-0 top-[100%] bg-white z-10 min-w-[170px] shadow-2xl p-0 m-0 list-none user-icon-header-dropdown transition-all">
+                <li
+                  className="text-[14px] leading-1 pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
+                  onClick={() => setProfileModal(true)}
+                >
+                  Profile
+                </li>
+                <li
+                  className="text-[14px] pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
+                  onClick={() => setChangePasswordModal(true)}
+                >
+                  Change password
+                </li>
+                <li
+                  className="text-[14px] pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </li>
+              </ul>
+            </div>
           </div>
         </Header>
         <Content className="site-layout-background mx-[16px] my-[24px] p-[24px] min-h-[280px]">

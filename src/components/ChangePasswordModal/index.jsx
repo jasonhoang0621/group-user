@@ -10,8 +10,13 @@ const ChangePasswordModal = ({ visible, setVisible }) => {
   };
 
   return (
-    <Modal visible={visible} onCancel={() => setVisible(false)} footer={null}>
-      <Form form={form} layout="vertical" className="mt-10">
+    <Modal
+      visible={visible}
+      onCancel={() => setVisible(false)}
+      footer={null}
+      title="Change Password"
+    >
+      <Form form={form} layout="vertical">
         <Form.Item name="password">
           <Input.Password
             className="app-input"

@@ -34,9 +34,9 @@ const Root = () => {
           <Route
             path="*"
             element={
-              <CheckAuth>
-                <Authenticated />
-              </CheckAuth>
+              // <CheckAuth>
+              <Authenticated />
+              // </CheckAuth>
             }
           />
           <Route path="*" element={<Navigate to={`/login`} replace />} />

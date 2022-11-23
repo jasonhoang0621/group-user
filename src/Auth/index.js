@@ -33,9 +33,9 @@ export const CheckAuth = ({ children }) => {
     verifyAccount();
   }, [check, user, dispatch, navigate, data]);
 
-  // if (!user && !check) {
-  //   return <LoadingScreen />;
-  // }
+  if (!user && !check) {
+    return <LoadingScreen />;
+  }
   if (!user && check) {
     navigate("/login");
   }

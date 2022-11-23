@@ -51,3 +51,16 @@ section.ant-layout.ant-layout-has-sider {
 .ant-menu-dark.ant-menu-dark:not(.ant-menu-horizontal) .ant-menu-item-selected {
   background-color: #192812;
 }
+
+.user-icon-header .user-icon-header-dropdown::after {
+  content: "";
+  position: absolute;
+  top: -30px;
+  right: 0;
+  height: 30px;
+  width: 100%;
+  z-index: 1;
+}
+.user-icon-header:hover .user-icon-header-dropdown {
+  display: block;
+}
