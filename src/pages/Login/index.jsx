@@ -6,12 +6,14 @@ import { useLogin } from "src/api/user";
 import FacebookIcon from "src/assets/images/facebook.png";
 import GoogleIcon from "src/assets/images/google.png";
 import { login } from "src/redux/auth";
+import { loginGoogle } from "src/api/user";
 
 const Login = () => {
   const [form] = useForm();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { mutateAsync, isLoading } = useLogin();
+
 
   const handleLogin = async () => {
     const res = await mutateAsync(form.getFieldsValue());
@@ -27,7 +29,13 @@ const Login = () => {
       navigate("/");
     }
   };
-
+  const handleLoginGoogle = async() => {
+    const res = await loginGoogle();
+    console.log(res.data)
+    if(!res.errorCode){
+      window.location.href = res.data;
+    }
+  };
   return (
     <div className="flex justify-center items-center h-screen bg-[#495E54]">
       {/* make card glass */}
@@ -59,7 +67,12 @@ const Login = () => {
           </Form>
           <div className="flex items-center justify-center mt-5">
             <span className="rounded-[50%] overflow-hidden cursor-pointer hover:opacity-60">
-              <img src={GoogleIcon} alt="" className="w-[50px] h-[50px]" />
+              <img
+                src={GoogleIcon}
+                alt=""
+                className="w-[50px] h-[50px]"
+                onClick={() => handleLoginGoogle()}
+              />
             </span>
             <span className="rounded-[50%] overflow-hidden ml-5 cursor-not-allowed">
               <img src={FacebookIcon} alt="" className="w-[50px] h-[50px]" />
