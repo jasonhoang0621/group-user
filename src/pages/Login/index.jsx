@@ -14,7 +14,6 @@ const Login = () => {
   const navigate = useNavigate();
   const { mutateAsync, isLoading } = useLogin();
 
-
   const handleLogin = async () => {
     const res = await mutateAsync(form.getFieldsValue());
     if (res.errorCode) {
@@ -29,13 +28,15 @@ const Login = () => {
       navigate("/");
     }
   };
-  const handleLoginGoogle = async() => {
+
+  const handleLoginGoogle = async () => {
     const res = await loginGoogle();
-    console.log(res.data)
-    if(!res.errorCode){
+    console.log(res.data);
+    if (!res.errorCode) {
       window.location.href = res.data;
     }
   };
+
   return (
     <div className="flex justify-center items-center h-screen bg-[#495E54]">
       {/* make card glass */}
@@ -60,7 +61,7 @@ const Login = () => {
               <Input.Password className="app-input" placeholder="Password" />
             </Form.Item>
             <div className="flex justify-center">
-              <button type="primary" htmlType="submit" className="button">
+              <button type="primary" htmltype="submit" className="button">
                 <span>Login</span>
               </button>
             </div>

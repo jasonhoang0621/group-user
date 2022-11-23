@@ -2,6 +2,7 @@ import { useState } from "react";
 import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { CheckAuth } from "src/Auth";
+import GoogleRedirect from "src/components/GoogleRedirect";
 import Login from "src/pages/Login";
 import Register from "src/pages/Register";
 import Verify from "src/pages/Verify";
@@ -29,14 +30,15 @@ const Root = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/login/google" element={<GoogleRedirect />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verify" element={<Verify />} />
           <Route
             path="*"
             element={
-              // <CheckAuth>
-              <Authenticated />
-              // </CheckAuth>
+              <CheckAuth>
+                <Authenticated />
+              </CheckAuth>
             }
           />
           <Route path="*" element={<Navigate to={`/login`} replace />} />

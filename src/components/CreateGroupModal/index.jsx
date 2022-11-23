@@ -32,7 +32,7 @@ const CreateGroupModal = ({ visible, setVisible }) => {
           />
         </Form.Item>
         <div className="flex justify-center">
-          <button type="primary" htmlType="submit" className="button">
+          <button type="primary" htmltype="submit" className="button">
             <span>Create</span>
           </button>
         </div>
