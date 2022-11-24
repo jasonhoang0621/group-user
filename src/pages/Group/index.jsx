@@ -1,8 +1,19 @@
-import { Button, Form, Modal, Select, Spin, Table, Tag } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Modal,
+  notification,
+  Select,
+  Spin,
+  Table,
+  Tag,
+} from "antd";
 import { useForm } from "antd/lib/form/Form";
 import React from "react";
 import { useSelector } from "react-redux";
 import { useGetListUser } from "src/api/user";
+import { CopyOutlined } from "@ant-design/icons";
 
 const Group = () => {
   // const user = useSelector((state) => state.auth);
@@ -11,6 +22,8 @@ const Group = () => {
   };
   const [removeUserModal, setRemoveUserModal] = React.useState(false);
   const [assignUserModal, setAssignUserModal] = React.useState(false);
+  const [shareLinkModal, setShareLinkModal] = React.useState(false);
+  const [inviteModal, setInviteModal] = React.useState(false);
   const [assignUser, setAssignUser] = React.useState(null);
   const [removeUser, setRemoveUser] = React.useState(null);
   const [form] = useForm();
@@ -150,6 +163,13 @@ const Group = () => {
     },
   ];
 
+  const handleCopyToClipBoard = () => {
+    navigator.clipboard.writeText("https://google.com");
+    notification.success({
+      message: "Link Copied",
+    });
+  };
+
   const handleRemoveUser = () => {
     setRemoveUser(null);
     setRemoveUserModal(false);
@@ -162,6 +182,20 @@ const Group = () => {
 
   return (
     <Spin spinning={isLoading}>
+      <div className="flex items-center justify-end mb-5">
+        <button
+          className="button button-danger !py-[8px] !min-w-[120px]"
+          onClick={() => setShareLinkModal(true)}
+        >
+          <span className="!text-[13px]">Create Link</span>
+        </button>
+        <button
+          className="button !py-[8px] !min-w-[120px]"
+          onClick={() => setInviteModal(true)}
+        >
+          <span className="!text-[13px]">Invite</span>
+        </button>
+      </div>
       <Table columns={columns} dataSource={data} rowKey="id" />
       <Modal
         title={"Unblock User"}
@@ -171,6 +205,7 @@ const Group = () => {
           setRemoveUser(null);
         }}
         footer={null}
+        destroyOnClose
       >
         <div>
           <div className="">
@@ -206,33 +241,89 @@ const Group = () => {
           setAssignUser(null);
         }}
         footer={null}
+        destroyOnClose
       >
-        <Form form={form} layout="vertical">
-          <Form.Item label="Role" name="role">
-            <Select>
-              <Select.Option value="coOwner">Co-owner</Select.Option>
-              <Select.Option value="leader">Leader</Select.Option>
-              <Select.Option value="member">Member</Select.Option>
-            </Select>
-          </Form.Item>
-          <div className="flex items-center justify-end mt-4">
-            <button
-              className="button button-danger mr-2"
-              onClick={() => {
-                setAssignUserModal(false);
-                setAssignUser(null);
-              }}
-            >
-              <span className="!text-[12px]">Cancel</span>
-            </button>
-            <button
-              className="button button-secondary"
-              onClick={handleAssignRole}
-            >
-              <span className="!text-[12px]">Assign</span>
-            </button>
-          </div>
-        </Form>
+        <div>
+          <p className="font-semibold pl-1">Choose Role:</p>
+          <Select
+            mode="single"
+            className="app-select"
+            placeholder="Select Role"
+          >
+            <Select.Option value="coOwner">Co-owner</Select.Option>
+            <Select.Option value="leader">Leader</Select.Option>
+            <Select.Option value="member">Member</Select.Option>
+          </Select>
+        </div>
+        <div className="flex items-center justify-end mt-4">
+          <button
+            className="button button-danger !py-2 !min-w-[100px]"
+            onClick={() => {
+              setAssignUserModal(false);
+              setAssignUser(null);
+            }}
+          >
+            <span className="!text-[12px]">Cancel</span>
+          </button>
+          <button
+            className="button button-secondary !py-2 !min-w-[100px]"
+            onClick={handleAssignRole}
+          >
+            <span className="!text-[12px]">Assign</span>
+          </button>
+        </div>
+      </Modal>
+      <Modal
+        title={"Share Link"}
+        visible={shareLinkModal}
+        onCancel={() => {
+          setShareLinkModal(false);
+        }}
+        footer={null}
+        destroyOnClose
+      >
+        <div>
+          <Input
+            className="app-input copy-input"
+            readOnly
+            value="https://www.google.com"
+            suffix={<CopyOutlined />}
+            onClick={handleCopyToClipBoard}
+          />
+        </div>
+      </Modal>
+      <Modal
+        title={"Invite User"}
+        visible={inviteModal}
+        onCancel={() => {
+          setInviteModal(false);
+        }}
+        footer={null}
+        destroyOnClose
+      >
+        <div className="w-full">
+          <p className="font-semibold">Enter Email:</p>
+          <Select mode="tags" placeholder="Enter email" className="app-select">
+            {data.map((item) => (
+              <Select.Option key={item.id} value={item.email}>
+                {item.email}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+        <div className="flex items-center justify-end mt-4">
+          <button
+            className="button button-danger !py-2 !min-w-[100px]"
+            onClick={() => {
+              setInviteModal(false);
+            }}
+          >
+            <span className="!text-[12px]">Cancel</span>
+          </button>
+          <button className="button button-secondary !py-2 !min-w-[100px]">
+            <span className="!text-[12px]">Invite</span>
+          </button>
+        </div>
       </Modal>
     </Spin>
   );
