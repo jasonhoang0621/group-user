@@ -14,9 +14,12 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useGetListUser } from "src/api/user";
 import { CopyOutlined } from "@ant-design/icons";
+import { useDetailGroup } from "src/api/group";
+import { useParams } from "react-router-dom";
 
 const Group = () => {
   // const user = useSelector((state) => state.auth);
+  const pararms = useParams();
   const user = {
     role: "owner",
   };
@@ -27,6 +30,8 @@ const Group = () => {
   const [assignUser, setAssignUser] = React.useState(null);
   const [removeUser, setRemoveUser] = React.useState(null);
   const [form] = useForm();
+
+  const { data: groupDetailData } = useDetailGroup(pararms.id);
 
   const { isLoading } = useGetListUser();
   const data = [
@@ -209,19 +214,20 @@ const Group = () => {
       >
         <div>
           <div className="">
-            <p className="text-lg font-semibold">
-              Are you sure you want to remove this user?
+            <p className="text-lg">
+              Are you sure you want to remove{" "}
+              <strong>{removeUser && removeUser.name}</strong> from this group?
             </p>
           </div>
           <div className="flex items-center justify-end mt-4">
             <button
-              className="button button-danger mr-2"
+              className="button button-danger mr-2 !py-[8px] !min-w-[120px]"
               onClick={handleRemoveUser}
             >
               <span className="!text-[12px]">Cancel</span>
             </button>
             <button
-              className="button button-secondary"
+              className="button button-secondary !py-[8px] !min-w-[120px]"
               onClick={() => {
                 setRemoveUserModal(false);
                 setAssignUser(null);
@@ -244,14 +250,17 @@ const Group = () => {
         destroyOnClose
       >
         <div>
-          <p className="font-semibold pl-1">Choose Role:</p>
+          <p className="mb-2">
+            Choose Role For <strong>{assignUser?.name}:</strong>
+          </p>
           <Select
             mode="single"
             className="app-select"
             placeholder="Select Role"
+            defaultValue={assignUser?.role}
           >
+            <Select.Option value="owner">Owner</Select.Option>
             <Select.Option value="coOwner">Co-owner</Select.Option>
-            <Select.Option value="leader">Leader</Select.Option>
             <Select.Option value="member">Member</Select.Option>
           </Select>
         </div>
