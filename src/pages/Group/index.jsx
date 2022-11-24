@@ -4,7 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useGetListUser } from "src/api/user";
 
-const User = () => {
+const Group = () => {
   // const user = useSelector((state) => state.auth);
   const user = {
     role: "owner",
@@ -238,4 +238,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Group;

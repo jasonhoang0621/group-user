@@ -21,7 +21,26 @@ const Layout = () => {
   const [profileModal, setProfileModal] = useState(false);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
 
-  const { data: groupData } = useGetListGroup();
+  const {
+    data: groupData = [
+      {
+        id: 0,
+        name: "All",
+      },
+      {
+        id: 1,
+        name: "All",
+      },
+      {
+        id: 2,
+        name: "All",
+      },
+      {
+        id: 3,
+        name: "All",
+      },
+    ],
+  } = useGetListGroup();
   const isFetching = useIsFetching();
   const isMutating = useIsMutating();
 
@@ -40,7 +59,7 @@ const Layout = () => {
   }, [location, groupData]);
 
   return (
-    <Spin spinning={isFetching || isMutating}>
+    <Spin spinning={isFetching + isMutating > 0}>
       <LayoutAntd>
         <Sider trigger={null} collapsible collapsed={collapsed}>
           <div className="logo h-[64px] flex items-center justify-center">
@@ -50,11 +69,11 @@ const Layout = () => {
             theme="dark"
             mode="inline"
             activeKey={[activeKey]}
-            items={groupData.map((item, index) => ({
+            items={groupData.map((item) => ({
               label: item.name.toUpperCase(),
               icon: <CoffeeOutlined />,
-              key: index,
-              onClick: () => navigate(`group/${item.id}`),
+              key: item.id,
+              onClick: () => navigate(`/group/${item.id}`),
             }))}
           />
         </Sider>

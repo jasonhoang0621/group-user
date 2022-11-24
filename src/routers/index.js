@@ -1,11 +1,11 @@
 import { UserOutlined } from "@ant-design/icons";
-import User from "src/pages/User";
+import Group from "src/pages/Group";
 
 const routers = [
   {
-    name: "user",
-    path: "/user",
-    element: User,
+    name: "group/",
+    path: "/group/:id",
+    element: Group,
     icon: <UserOutlined />,
   },
 ];
