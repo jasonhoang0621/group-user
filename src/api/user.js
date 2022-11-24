@@ -7,8 +7,8 @@ export const useLogin = () => {
 export const loginGoogle = async () => {
   return await axiosClient.get("/loginGoogle");
 };
-export const useVerify = () => {
-  return useQuery("verify", () => axiosClient.get("/verify"));
+export const useProfile = () => {
+  return useQuery("profile", () => axiosClient.get("/profile"));
 };
 export const useRegister = () => {
   return useMutation((payload) => axiosClient.post("/register", payload));
@@ -16,11 +16,9 @@ export const useRegister = () => {
 export const useGetListUser = () => {
   return useQuery("user", () => axiosClient.get("/user"));
 };
-export const useBlockUser = () => {
-  return useMutation((payload) =>
-    axiosClient.patch(`/deleteAccount/${payload}`)
-  );
+export const useEditProfile = () => {
+  return useMutation((payload) => axiosClient.put("/profile", payload));
 };
-export const useUnblockUser = () => {
-  return useMutation((payload) => axiosClient.patch(`/unban/${payload}`));
+export const useChangePassword = () => {
+  return useMutation((payload) => axiosClient.put("/change-password", payload));
 };
