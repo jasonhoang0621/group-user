@@ -13,7 +13,6 @@ const GoogleRedirect = () => {
     if (code) {
       const handleLoginGoogle = async () => {
         const res = await mutateAsync({ code });
-        console.log(res);
         if (res.errorCode) {
           notification.error({
             message: "Login failed",
@@ -22,6 +21,7 @@ const GoogleRedirect = () => {
           });
         } else {
           localStorage.setItem("token", res.data.token);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
           navigate("/");
         }
       };
@@ -33,7 +33,7 @@ const GoogleRedirect = () => {
       });
       navigate("/login");
     }
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, mutateAsync]);
 };
 
 export default GoogleRedirect;

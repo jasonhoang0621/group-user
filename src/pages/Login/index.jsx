@@ -1,12 +1,11 @@
-import { Form, Input, notification, Spin } from "antd";
+import { Form, Input, notification } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useLogin, useLoginGoogle } from "src/api/user";
+import { getGoogleLink, useLogin } from "src/api/user";
 import FacebookIcon from "src/assets/images/facebook.png";
 import GoogleIcon from "src/assets/images/google.png";
 import { login } from "src/redux/auth";
-import { getGoogleLink } from "src/api/user";
 
 const Login = () => {
   const [form] = useForm();
@@ -24,6 +23,7 @@ const Login = () => {
       });
     } else {
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("refreshToken", res.data.refreshToken);
       dispatch(login(res.data));
       navigate("/");
     }
@@ -31,7 +31,6 @@ const Login = () => {
 
   const handleRedirectGoogle = async () => {
     const res = await getGoogleLink();
-    console.log(res.data);
     if (!res.errorCode) {
       window.location.href = res.data;
     }

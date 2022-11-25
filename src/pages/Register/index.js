@@ -1,4 +1,4 @@
-import { Form, Input, notification, Spin } from "antd";
+import { Form, Input, notification } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import { Link, useNavigate } from "react-router-dom";
 import { getGoogleLink, useRegister } from "src/api/user";
@@ -25,8 +25,6 @@ const Register = () => {
 
   const handleRedirectGoogle = async () => {
     const res = await getGoogleLink();
-    console.log(res);
-    console.log(res.data);
     if (!res.errorCode) {
       window.location.href = res.data;
     }

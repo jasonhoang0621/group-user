@@ -1,21 +1,9 @@
-import {
-  Button,
-  Form,
-  Input,
-  Modal,
-  notification,
-  Select,
-  Spin,
-  Table,
-  Tag,
-} from "antd";
-import { useForm } from "antd/lib/form/Form";
-import React from "react";
-import { useSelector } from "react-redux";
-import { useGetListUser } from "src/api/user";
 import { CopyOutlined } from "@ant-design/icons";
-import { useDetailGroup } from "src/api/group";
+import { Input, Modal, notification, Select, Spin, Table, Tag } from "antd";
+import React from "react";
 import { useParams } from "react-router-dom";
+import { useAssignRole, useDetailGroup } from "src/api/group";
+import { useGetListUser } from "src/api/user";
 
 const Group = () => {
   // const user = useSelector((state) => state.auth);
@@ -29,43 +17,11 @@ const Group = () => {
   const [inviteModal, setInviteModal] = React.useState(false);
   const [assignUser, setAssignUser] = React.useState(null);
   const [removeUser, setRemoveUser] = React.useState(null);
-  const [form] = useForm();
 
-  const { data: groupDetailData } = useDetailGroup(pararms.id);
+  const { data: groupDetailData = null } = useDetailGroup(pararms.id);
+  console.log(groupDetailData);
 
   const { isLoading } = useGetListUser();
-  const data = [
-    {
-      id: 1,
-      name: "John Brown",
-      email: "abc@gmail.com",
-      role: "owner",
-    },
-    {
-      id: 2,
-      name: "Jim Green",
-      email: "meadcad",
-      role: "member",
-    },
-    {
-      id: 3,
-      name: "Joe Black",
-      email: "meadcad",
-      role: "member",
-    },
-    {
-      id: 4,
-      name: "Jim Red",
-      email: "meadcad",
-      role: "coOwner",
-    },
-    {
-      id: 5,
-      name: "Jim Blue",
-      email: "meadcad",
-      role: "leader",
-    },
-  ];
 
   const showRemoveButton = (record) => {
     if (user.role === "owner") {
@@ -201,7 +157,11 @@ const Group = () => {
           <span className="!text-[13px]">Invite</span>
         </button>
       </div>
-      <Table columns={columns} dataSource={data} rowKey="id" />
+      <Table
+        columns={columns}
+        dataSource={groupDetailData?.data?.user}
+        rowKey="id"
+      />
       <Modal
         title={"Unblock User"}
         visible={removeUserModal}
@@ -313,11 +273,12 @@ const Group = () => {
         <div className="w-full">
           <p className="font-semibold">Enter Email:</p>
           <Select mode="tags" placeholder="Enter email" className="app-select">
-            {data.map((item) => (
-              <Select.Option key={item.id} value={item.email}>
-                {item.email}
-              </Select.Option>
-            ))}
+            {/* {groupDetailData &&
+              groupDetailData.data.user.map((item) => (
+                <Select.Option key={item.id} value={item.email}>
+                  {item.email}
+                </Select.Option>
+              ))} */}
           </Select>
         </div>
         <div className="flex items-center justify-end mt-4">

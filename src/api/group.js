@@ -2,15 +2,17 @@ import { useMutation, useQuery } from "react-query";
 import { axiosClient } from ".";
 
 export const useGetListGroup = () => {
-  return useQuery("group", () => axiosClient.get("/groups"));
+  return useQuery("group", () => axiosClient.get("/groups"), {
+    staleTime: Infinity,
+  });
 };
 
 export const useCreateGroup = () => {
-  return useMutation((payload) => axiosClient.post("/groups", payload));
+  return useMutation((payload) => axiosClient.post("/group", payload));
 };
 
 export const useDetailGroup = (id) => {
-  return useQuery(["group", id], () => axiosClient.get(`/groups/${id}`));
+  return useQuery(["group", id], () => axiosClient.get(`/group/${id}`));
 };
 
 export const useAssignRole = () => {
