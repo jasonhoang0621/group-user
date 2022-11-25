@@ -21,26 +21,7 @@ const Layout = () => {
   const [profileModal, setProfileModal] = useState(false);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
 
-  const {
-    data: groupData = [
-      {
-        id: 0,
-        name: "All",
-      },
-      {
-        id: 1,
-        name: "All",
-      },
-      {
-        id: 2,
-        name: "All",
-      },
-      {
-        id: 3,
-        name: "All",
-      },
-    ],
-  } = useGetListGroup();
+  const { data: groupData = [] } = useGetListGroup();
   const isFetching = useIsFetching();
   const isMutating = useIsMutating();
 
@@ -57,6 +38,8 @@ const Layout = () => {
     );
     setActiveKey(key);
   }, [location, groupData]);
+
+  console.log(groupData);
 
   return (
     <Spin spinning={isFetching + isMutating > 0}>
