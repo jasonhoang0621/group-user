@@ -4,8 +4,11 @@ import { useQuery, useMutation } from "react-query";
 export const useLogin = () => {
   return useMutation((payload) => axiosClient.post("/login", payload));
 };
-export const loginGoogle = async () => {
+export const getGoogleLink = async () => {
   return await axiosClient.get("/loginGoogle");
+};
+export const useLoginGoogle = () => {
+  return useMutation((payload) => axiosClient.post("/oauth/google", payload));
 };
 export const useProfile = () => {
   return useQuery("profile", () => axiosClient.get("/profile"));

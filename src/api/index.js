@@ -4,7 +4,7 @@ import { deleteCookie, getCookie } from "src/helpers/cookie";
 
 const apiConfig = {
   // baseURL: "https://ec01-03-server.herokuapp.com/",
-  baseURL: "http://localhost:4000/api/",
+  baseURL: "http://localhost:3000/api/",
   token: localStorage.getItem("token") || "",
 };
 
@@ -21,7 +21,7 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(async (config) => {
   const token = localStorage.getItem("token") || getCookie("token");
   if (token) {
-    config.headers.token = token;
+    config.headers.authorization = token;
   }
 
   return config;
@@ -35,6 +35,7 @@ axiosClient.interceptors.response.use(
   },
   (error) => {
     if (error?.response?.status === 401) {
+      deleteCookie("token");
       localStorage.removeItem("token");
       window.location.href = "/login";
     }
