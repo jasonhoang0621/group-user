@@ -2,6 +2,7 @@ import { useState } from "react";
 import { QueryCache, QueryClient, QueryClientProvider } from "react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import GoogleRedirect from "src/components/GoogleRedirect";
+import JoinGroupRedirect from "src/components/JoinGroupRedirect";
 import Login from "src/pages/Login";
 import Register from "src/pages/Register";
 import Verify from "src/pages/Verify";
@@ -32,6 +33,7 @@ const Root = () => {
           <Route path="/login/google" element={<GoogleRedirect />} />
           <Route path="/register" element={<Register />} />
           <Route path="/verify" element={<Verify />} />
+          <Route path="/invite/:id" element={<JoinGroupRedirect />} />
           <Route path="*" element={<Authenticated />} />
           <Route path="*" element={<Navigate to={`/login`} replace />} />
         </Routes>

@@ -30,6 +30,6 @@ export const useInviteUser = (groupId) => {
 };
 export const useAcceptInvite = (inviteId) => {
   return useMutation((payload) =>
-    axiosClient.post(`/invite/${inviteId}`, payload)
+    axiosClient.post(`/invite/accept/${inviteId}`, payload)
   );
 };
