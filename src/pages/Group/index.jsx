@@ -2,7 +2,7 @@ import { CopyOutlined } from "@ant-design/icons";
 import { Input, Modal, notification, Select, Spin, Table, Tag } from "antd";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useAssignRole, useDetailGroup } from "src/api/group";
+import { useDetailGroup } from "src/api/group";
 import { useGetListUser } from "src/api/user";
 
 const Group = () => {
@@ -19,7 +19,6 @@ const Group = () => {
   const [removeUser, setRemoveUser] = React.useState(null);
 
   const { data: groupDetailData = null } = useDetailGroup(pararms.id);
-  console.log(groupDetailData);
 
   const { isLoading } = useGetListUser();
 
@@ -255,7 +254,7 @@ const Group = () => {
           <Input
             className="app-input copy-input"
             readOnly
-            value="https://www.google.com"
+            value={window.location.origin + "/group/invite"}
             suffix={<CopyOutlined />}
             onClick={handleCopyToClipBoard}
           />
