@@ -14,6 +14,9 @@ import { useGetListGroup } from "src/api/group";
 import ChangePasswordModal from "../ChangePasswordModal";
 import CreateGroupModal from "../CreateGroupModal";
 import ProfileModal from "../ProfileModal";
+import { useProfile } from "src/api/user";
+import { useDispatch } from "react-redux";
+import { login } from "src/redux/auth";
 const { Header, Sider, Content } = LayoutAntd;
 
 const Layout = () => {
@@ -28,6 +31,7 @@ const Layout = () => {
   const { data: groupData } = useGetListGroup();
   const isFetching = useIsFetching();
   const isMutating = useIsMutating();
+  const dispatch = useDispatch();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -46,6 +50,11 @@ const Layout = () => {
     }
     setActiveKey(key);
   }, [location, groupData]);
+
+  const { data: auth = {}, isLoading } = useProfile();
+  useEffect(() => {
+    dispatch(login(auth.data));
+  }, [isLoading]);
 
   return (
     <Spin spinning={isFetching + isMutating > 0}>

@@ -43,6 +43,9 @@ axiosClient.interceptors.response.use(
         result?.data?.token;
       return axiosClient(originalRequest);
     }
+    if (error?.response?.status === 400) {
+      return error?.response?.data
+    }
   }
 );
 

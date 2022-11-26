@@ -18,7 +18,7 @@ const Login = () => {
     if (res.errorCode) {
       notification.error({
         message: "Login failed",
-        description: res.data.message || "Login failed",
+        description: res.data,
         duration: 1,
       });
     } else {

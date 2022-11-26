@@ -1,12 +1,39 @@
-import { Form, Input, Modal } from "antd";
+import { Form, Input, Modal, notification } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import React from "react";
-
+import { useChangePassword } from "src/api/user";
 const ChangePasswordModal = ({ visible, setVisible }) => {
   const [form] = useForm();
+  const { mutateAsync } = useChangePassword();
 
-  const handleChangePassword = () => {
-    setVisible(false);
+  const handleChangePassword = async () => {
+    console.log(form.getFieldsValue());
+    if (form.getFieldValue("password") === form.getFieldValue("newPassword")) {
+      return notification.error({
+        message: "Change password failed",
+        description: "New password must be different from old password",
+      })
+    }
+    if (form.getFieldValue("newPassword") !== form.getFieldValue("rePassword")) {
+      return notification.error({
+        message: "Change password failed",
+        description: "New password and re-password must be the same",
+      })
+    }
+    const res = await mutateAsync(form.getFieldsValue());
+    if (res.errorCode) {
+      notification.error({
+        message: "Change password failed",
+        description: res.data,
+        duration: 1,
+      });
+    } else {
+      notification.success({
+        message: "Change password successfully",
+        duration: 1,
+      });
+      setVisible(false);
+    }
   };
 
   return (

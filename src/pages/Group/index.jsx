@@ -4,13 +4,17 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { useDetailGroup } from "src/api/group";
 import { useGetListUser } from "src/api/user";
-
+import { useSelector } from "react-redux";
+import { useState } from "react";
+import { useEffect } from "react";
 const Group = () => {
-  // const user = useSelector((state) => state.auth);
   const pararms = useParams();
-  const user = {
-    role: "owner",
-  };
+  const auth = useSelector((state) => state.auth);
+  console.log("auth", auth);
+
+  const [user, setUser] = useState({
+    role: "member",
+  });
   const [removeUserModal, setRemoveUserModal] = React.useState(false);
   const [assignUserModal, setAssignUserModal] = React.useState(false);
   const [shareLinkModal, setShareLinkModal] = React.useState(false);
@@ -18,9 +22,21 @@ const Group = () => {
   const [assignUser, setAssignUser] = React.useState(null);
   const [removeUser, setRemoveUser] = React.useState(null);
 
-  const { data: groupDetailData = null } = useDetailGroup(pararms.id);
+  const { data: groupDetailData = null, isLoading: loadingGroup } =
+    useDetailGroup(pararms.id);
 
   const { isLoading } = useGetListUser();
+  useEffect(() => {
+    if (groupDetailData) {
+      console.log("groupDetailData", groupDetailData.data);
+      const temp = groupDetailData.data.user.filter(
+        (item) => item.id === auth?.user?.id
+      );
+      setUser({
+        role: temp[0].role,
+      });
+    }
+  }, [loadingGroup, auth]);
 
   const showRemoveButton = (record) => {
     if (user.role === "owner") {
@@ -36,7 +52,7 @@ const Group = () => {
         </button>
       );
     }
-    if (user.role === "coOwner" && record.role !== "owner") {
+    if (user.role === "co-owner" && record.role !== "owner") {
       return (
         <button
           className="button button-danger !py-[5px] !min-w-[100px]"
@@ -76,7 +92,7 @@ const Group = () => {
                 <Tag color="blue">Owner</Tag>
               </div>
             );
-          case "coOwner":
+          case "co-owner":
             return (
               <div className="text-center">
                 <Tag color="green">Co-owner</Tag>

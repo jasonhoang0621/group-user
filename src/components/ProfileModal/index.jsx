@@ -1,12 +1,29 @@
 import { Form, Input, Modal } from "antd";
 import { useForm } from "antd/lib/form/Form";
 import React from "react";
-
+import { useEditProfile } from "src/api/user";
+import { notification } from "antd";
+import { useQueryClient } from "react-query";
 const ProfileModal = ({ visible, setVisible }) => {
   const [form] = useForm();
-
-  const handleChangePassword = () => {
-    setVisible(false);
+  const { mutateAsync } = useEditProfile();
+  const queryClient = useQueryClient();
+  const handleChangeProfile = async () => {
+    const res = await mutateAsync(form.getFieldsValue());
+    if (res.errorCode) {
+      notification.error({
+        message: "Edit failed",
+        description: res.data,
+        duration: 1,
+      });
+    } else {
+      notification.success({
+        message: "Edit profile successfully",
+        duration: 1,
+      });
+      queryClient.invalidateQueries("group");
+      setVisible(false);
+    }
   };
 
   return (
@@ -29,7 +46,7 @@ const ProfileModal = ({ visible, setVisible }) => {
           </button>
           <button
             className="button button-secondary"
-            onClick={handleChangePassword}
+            onClick={handleChangeProfile}
           >
             <span className="!text-[12px]">Change</span>
           </button>
