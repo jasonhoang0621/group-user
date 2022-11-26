@@ -14,7 +14,6 @@ const JoinGroupRedirect = () => {
     const token = localStorage.getItem("token");
     const handleAccept = async () => {
       if (token && id) {
-        console.log(id);
         const result = await joinGroup();
         if (result?.errorCode) {
           notification.error({

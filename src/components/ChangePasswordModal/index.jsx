@@ -7,18 +7,19 @@ const ChangePasswordModal = ({ visible, setVisible }) => {
   const { mutateAsync } = useChangePassword();
 
   const handleChangePassword = async () => {
-    console.log(form.getFieldsValue());
     if (form.getFieldValue("password") === form.getFieldValue("newPassword")) {
       return notification.error({
         message: "Change password failed",
         description: "New password must be different from old password",
-      })
+      });
     }
-    if (form.getFieldValue("newPassword") !== form.getFieldValue("rePassword")) {
+    if (
+      form.getFieldValue("newPassword") !== form.getFieldValue("rePassword")
+    ) {
       return notification.error({
         message: "Change password failed",
         description: "New password and re-password must be the same",
-      })
+      });
     }
     const res = await mutateAsync(form.getFieldsValue());
     if (res.errorCode) {

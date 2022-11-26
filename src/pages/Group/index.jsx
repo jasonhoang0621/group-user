@@ -10,7 +10,6 @@ import { useEffect } from "react";
 const Group = () => {
   const pararms = useParams();
   const auth = useSelector((state) => state.auth);
-  console.log("auth", auth);
 
   const [user, setUser] = useState({
     role: "member",
@@ -25,18 +24,19 @@ const Group = () => {
 
   const { data: groupDetailData = null, isLoading: loadingGroup } =
     useDetailGroup(pararms.id);
+  // const { data: listUser = null } = useGetListUser();
+  // console.log(listUser);
 
   const { mutateAsync: inviteUser } = useInviteUser(pararms.id);
 
   const { isLoading } = useGetListUser();
   useEffect(() => {
     if (groupDetailData) {
-      console.log("groupDetailData", groupDetailData.data);
       const temp = groupDetailData.data.user.filter(
         (item) => item.id === auth?.user?.id
       );
       setUser({
-        role: temp[0].role,
+        role: temp[0]?.role,
       });
     }
   }, [loadingGroup, auth]);
