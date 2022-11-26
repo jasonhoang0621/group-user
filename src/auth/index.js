@@ -10,6 +10,8 @@ const Authenticate = ({ children }) => {
   useLayoutEffect(() => {
     if (data) {
       dispatch(login(data?.data));
+      localStorage.setItem("token", data?.data?.token);
+      localStorage.setItem("refreshToken", data?.data?.refreshToken);
     }
   }, [data, dispatch]);
   return children;

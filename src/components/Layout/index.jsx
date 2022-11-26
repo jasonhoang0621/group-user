@@ -15,11 +15,12 @@ import ChangePasswordModal from "../ChangePasswordModal";
 import CreateGroupModal from "../CreateGroupModal";
 import ProfileModal from "../ProfileModal";
 import { useProfile } from "src/api/user";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "src/redux/auth";
 const { Header, Sider, Content } = LayoutAntd;
 
 const Layout = () => {
+  const auth = useSelector((state) => state.auth);
   const location = useLocation();
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
@@ -31,7 +32,6 @@ const Layout = () => {
   const { data: groupData } = useGetListGroup();
   const isFetching = useIsFetching();
   const isMutating = useIsMutating();
-  const dispatch = useDispatch();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -50,11 +50,6 @@ const Layout = () => {
     }
     setActiveKey(key);
   }, [location, groupData]);
-
-  const { data: auth = {}, isLoading } = useProfile();
-  useEffect(() => {
-    dispatch(login(auth.data));
-  }, [isLoading]);
 
   return (
     <Spin spinning={isFetching + isMutating > 0}>
@@ -102,12 +97,14 @@ const Layout = () => {
                     >
                       Profile
                     </li>
-                    <li
-                      className="text-[14px] pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
-                      onClick={() => setChangePasswordModal(true)}
-                    >
-                      Change password
-                    </li>
+                    {!auth.user?.loginService && (
+                      <li
+                        className="text-[14px] pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
+                        onClick={() => setChangePasswordModal(true)}
+                      >
+                        Change password
+                      </li>
+                    )}
                     <li
                       className="text-[14px] pl-5 cursor-pointer transition-all duration-200 hover:bg-[#44523f] hover:text-white"
                       onClick={handleLogout}

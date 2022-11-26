@@ -4,12 +4,17 @@ import React from "react";
 import { useEditProfile } from "src/api/user";
 import { notification } from "antd";
 import { useQueryClient } from "react-query";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 const ProfileModal = ({ visible, setVisible }) => {
+  const auth = useSelector((state) => state.auth);
   const [form] = useForm();
   const { mutateAsync } = useEditProfile();
   const queryClient = useQueryClient();
   const handleChangeProfile = async () => {
-    const res = await mutateAsync(form.getFieldsValue());
+    const formData = form.getFieldsValue();
+    delete formData.email;
+    const res = await mutateAsync(formData);
     if (res.errorCode) {
       notification.error({
         message: "Edit failed",
@@ -26,6 +31,13 @@ const ProfileModal = ({ visible, setVisible }) => {
     }
   };
 
+  useEffect(() => {
+    form.setFieldsValue({
+      email: auth.user?.email,
+      name: auth.user?.name,
+    });
+  }, [auth]);
+
   return (
     <Modal
       visible={visible}
@@ -34,6 +46,13 @@ const ProfileModal = ({ visible, setVisible }) => {
       title="Profile"
     >
       <Form form={form} layout="vertical">
+        <Form.Item name="email">
+          <Input
+            className="app-input bg-gray-300 !cursor-not-allowed"
+            placeholder="Email"
+            readOnly
+          />
+        </Form.Item>
         <Form.Item name="name">
           <Input className="app-input" placeholder="Name" />
         </Form.Item>

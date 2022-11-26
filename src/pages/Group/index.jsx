@@ -21,11 +21,11 @@ const Group = () => {
   const [assignUser, setAssignUser] = React.useState(null);
   const [removeUser, setRemoveUser] = React.useState(null);
   const [shareLink, setShareLink] = React.useState("");
+  const [listInviteByEmail, setListInviteByEmail] = React.useState([]);
 
   const { data: groupDetailData = null, isLoading: loadingGroup } =
     useDetailGroup(pararms.id);
-  // const { data: listUser = null } = useGetListUser();
-  // console.log(listUser);
+  const { data: listUser = null } = useGetListUser();
 
   const { mutateAsync: inviteUser } = useInviteUser(pararms.id);
 
@@ -143,6 +143,31 @@ const Group = () => {
     },
   ];
 
+  const handleInviteUserByEmail = async () => {
+    try {
+      const result = await inviteUser({
+        isEmail: true,
+        memberEmail: listInviteByEmail,
+      });
+      if (result?.errorCode) {
+        notification.error({
+          message: result?.data,
+        });
+      } else {
+        notification.success({
+          message: "Invite user successfully",
+        });
+        setListInviteByEmail([]);
+      }
+      setInviteModal(false);
+      queryClient.invalidateQueries(["group", pararms.id]);
+    } catch (error) {
+      notification.error({
+        message: "Invite user failed",
+      });
+    }
+  };
+
   const handleCopyToClipBoard = () => {
     navigator.clipboard.writeText(
       window.location.origin + "/invite/" + shareLink
@@ -176,6 +201,10 @@ const Group = () => {
     setAssignUserModal(false);
   };
 
+  const handleCloseInviteModal = () => {
+    setInviteModal(false);
+  };
+
   useEffect(() => {
     const getLinkInvite = async () => {
       const result = await inviteUser({
@@ -189,18 +218,24 @@ const Group = () => {
         setShareLink(result?.data?.id);
       }
     };
-    getLinkInvite();
+    if (user?.role !== "member") {
+      getLinkInvite();
+    }
   }, [pararms, inviteUser]);
+
+  console.log(user.role);
 
   return (
     <Spin spinning={isLoading}>
       <div className="flex items-center justify-end mb-5">
-        <button
-          className="button button-danger !py-[8px] !min-w-[120px]"
-          onClick={() => setShareLinkModal(true)}
-        >
-          <span className="!text-[13px]">Create Link</span>
-        </button>
+        {user.role !== "member" && (
+          <button
+            className="button button-danger !py-[8px] !min-w-[120px]"
+            onClick={() => setShareLinkModal(true)}
+          >
+            <span className="!text-[13px]">Create Link</span>
+          </button>
+        )}
         <button
           className="button !py-[8px] !min-w-[120px]"
           onClick={() => setInviteModal(true)}
@@ -315,33 +350,45 @@ const Group = () => {
       <Modal
         title={"Invite User"}
         visible={inviteModal}
-        onCancel={() => {
-          setInviteModal(false);
-        }}
+        onCancel={handleCloseInviteModal}
         footer={null}
         destroyOnClose
       >
         <div className="w-full">
           <p className="font-semibold">Enter Email:</p>
-          <Select mode="tags" placeholder="Enter email" className="app-select">
-            {/* {groupDetailData &&
-              groupDetailData.data.user.map((item) => (
-                <Select.Option key={item.id} value={item.email}>
-                  {item.email}
-                </Select.Option>
-              ))} */}
+          <Select
+            mode="tags"
+            placeholder="Enter email"
+            className="app-select"
+            value={listInviteByEmail}
+            onChange={(value) => setListInviteByEmail(value)}
+          >
+            {listUser &&
+              groupDetailData &&
+              listUser.data
+                .filter(
+                  (item) =>
+                    groupDetailData.data?.user.find((x) => x.id === item.id) ===
+                    undefined
+                )
+                .map((item) => (
+                  <Select.Option key={item.id} value={item.email}>
+                    {item.email}
+                  </Select.Option>
+                ))}
           </Select>
         </div>
         <div className="flex items-center justify-end mt-4">
           <button
             className="button button-danger !py-2 !min-w-[100px]"
-            onClick={() => {
-              setInviteModal(false);
-            }}
+            onClick={handleCloseInviteModal}
           >
             <span className="!text-[12px]">Cancel</span>
           </button>
-          <button className="button button-secondary !py-2 !min-w-[100px]">
+          <button
+            className="button button-secondary !py-2 !min-w-[100px]"
+            onClick={handleInviteUserByEmail}
+          >
             <span className="!text-[12px]">Invite</span>
           </button>
         </div>
