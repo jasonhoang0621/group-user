@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useDetailGroup, useInviteUser, useRemoveUser } from "src/api/group";
+import { useDetailGroup, useInviteUser, useRemoveUser, useAssignRole } from "src/api/group";
 import { useGetListUser } from "src/api/user";
 
 const Group = () => {
@@ -22,6 +22,7 @@ const Group = () => {
   const [removeUser, setRemoveUser] = React.useState(null);
   const [shareLink, setShareLink] = React.useState("");
   const [listInviteByEmail, setListInviteByEmail] = React.useState([]);
+  const [role, setRole] = useState("member");
 
   const { data: groupDetailData = null, isLoading: loadingGroup } =
     useDetailGroup(pararms.id);
@@ -31,6 +32,8 @@ const Group = () => {
 
   const { isLoading } = useGetListUser();
   const { mutateAsync: removeUserGroup } = useRemoveUser(pararms.id);
+  const { mutateAsync: assignMember } = useAssignRole(pararms.id);
+
   useEffect(() => {
     if (groupDetailData) {
       const temp = groupDetailData.data.user.filter(
@@ -131,6 +134,7 @@ const Group = () => {
                   onClick={() => {
                     setAssignUser(record);
                     setAssignUserModal(true);
+                    setRole(record.role)
                   }}
                 >
                   <span className="!text-[12px]">Assign</span>
@@ -196,7 +200,21 @@ const Group = () => {
     setRemoveUserModal(false);
   };
 
-  const handleAssignRole = () => {
+  const handleAssignRole = async () => {
+    const res = await assignMember({ userId: assignUser.id, role: role });
+    if (res.errorCode) {
+      return notification.error({
+        message: "Assign role failed",
+        description: res.data,
+        duration: 1,
+      });
+    }
+    notification.success({
+      message: "Assign role successfully",
+      description: "Assign role successfully",
+      duration: 1,
+    });
+    queryClient.invalidateQueries("group");
     setAssignUser(null);
     setAssignUserModal(false);
   };
@@ -289,6 +307,7 @@ const Group = () => {
         onCancel={() => {
           setAssignUserModal(false);
           setAssignUser(null);
+          setRole(null)
         }}
         footer={null}
         destroyOnClose
@@ -302,9 +321,10 @@ const Group = () => {
             className="app-select"
             placeholder="Select Role"
             defaultValue={assignUser?.role}
+            onChange={(value) => setRole(value)}
           >
             <Select.Option value="owner">Owner</Select.Option>
-            <Select.Option value="coOwner">Co-owner</Select.Option>
+            <Select.Option value="co-owner">Co-owner</Select.Option>
             <Select.Option value="member">Member</Select.Option>
           </Select>
         </div>
