@@ -43,6 +43,7 @@ axiosClient.interceptors.response.use(
         result?.data?.token;
       return axiosClient(originalRequest);
     }
+    return error?.response?.data
   }
 );
 

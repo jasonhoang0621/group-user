@@ -77,7 +77,7 @@ const Group = () => {
                 <Tag color="blue">Owner</Tag>
               </div>
             );
-          case "coOwner":
+          case "co-owner":
             return (
               <div className="text-center">
                 <Tag color="green">Co-owner</Tag>

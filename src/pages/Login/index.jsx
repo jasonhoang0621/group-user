@@ -15,10 +15,11 @@ const Login = () => {
 
   const handleLogin = async () => {
     const res = await mutateAsync(form.getFieldsValue());
+    console.log(res)
     if (res.errorCode) {
       notification.error({
         message: "Login failed",
-        description: res.data.message || "Login failed",
+        description: res.data,
         duration: 1,
       });
     } else {

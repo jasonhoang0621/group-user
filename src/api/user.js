@@ -20,8 +20,8 @@ export const useGetListUser = () => {
   return useQuery("user", () => axiosClient.get("/user"));
 };
 export const useEditProfile = () => {
-  return useMutation((payload) => axiosClient.put("/profile", payload));
+  return useMutation((payload) => axiosClient.patch("/profile", payload));
 };
 export const useChangePassword = () => {
-  return useMutation((payload) => axiosClient.put("/change-password", payload));
+  return useMutation((payload) => axiosClient.patch("/changePass", payload));
 };
