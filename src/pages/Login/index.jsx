@@ -15,7 +15,6 @@ const Login = () => {
 
   const handleLogin = async () => {
     const res = await mutateAsync(form.getFieldsValue());
-    console.log(res)
     if (res.errorCode) {
       notification.error({
         message: "Login failed",
