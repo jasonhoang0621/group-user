@@ -2,7 +2,7 @@ import { CopyOutlined } from "@ant-design/icons";
 import { Input, Modal, notification, Select, Spin, Table, Tag } from "antd";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useDetailGroup } from "src/api/group";
+import { useDetailGroup, useInviteUser } from "src/api/group";
 import { useGetListUser } from "src/api/user";
 import { useSelector } from "react-redux";
 import { useState } from "react";
@@ -21,9 +21,12 @@ const Group = () => {
   const [inviteModal, setInviteModal] = React.useState(false);
   const [assignUser, setAssignUser] = React.useState(null);
   const [removeUser, setRemoveUser] = React.useState(null);
+  const [shareLink, setShareLink] = React.useState("");
 
   const { data: groupDetailData = null, isLoading: loadingGroup } =
     useDetailGroup(pararms.id);
+
+  const { mutateAsync: inviteUser } = useInviteUser(pararms.id);
 
   const { isLoading } = useGetListUser();
   useEffect(() => {
@@ -140,7 +143,9 @@ const Group = () => {
   ];
 
   const handleCopyToClipBoard = () => {
-    navigator.clipboard.writeText("https://google.com");
+    navigator.clipboard.writeText(
+      window.location.origin + "/invite/" + shareLink
+    );
     notification.success({
       message: "Link Copied",
     });
@@ -155,6 +160,22 @@ const Group = () => {
     setAssignUser(null);
     setAssignUserModal(false);
   };
+
+  useEffect(() => {
+    const getLinkInvite = async () => {
+      const result = await inviteUser({
+        isEmail: false,
+      });
+      if (result?.errorCode) {
+        notification.error({
+          message: result?.data,
+        });
+      } else {
+        setShareLink(result?.data?.id);
+      }
+    };
+    getLinkInvite();
+  }, [pararms, inviteUser]);
 
   return (
     <Spin spinning={isLoading}>
@@ -270,7 +291,7 @@ const Group = () => {
           <Input
             className="app-input copy-input"
             readOnly
-            value={window.location.origin + "/group/invite"}
+            value={window.location.origin + "/invite/" + shareLink}
             suffix={<CopyOutlined />}
             onClick={handleCopyToClipBoard}
           />
