@@ -19,8 +19,8 @@ export const useAssignRole = () => {
   return useMutation((payload) => axiosClient.post("/assign", payload));
 };
 
-export const useRemoveUser = () => {
-  return useMutation((payload) => axiosClient.post("/remove", payload));
+export const useRemoveUser = (groupId) => {
+  return useMutation((payload) => axiosClient.patch(`/group/${groupId}`, payload));
 };
 
 export const useInviteUser = (groupId) => {
