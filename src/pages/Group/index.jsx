@@ -221,9 +221,7 @@ const Group = () => {
     if (user?.role !== "member") {
       getLinkInvite();
     }
-  }, [pararms, inviteUser]);
-
-  console.log(user.role);
+  }, [pararms, inviteUser, user]);
 
   return (
     <Spin spinning={isLoading}>

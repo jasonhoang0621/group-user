@@ -8,7 +8,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
-import { useIsFetching, useIsMutating } from "react-query";
+import { useIsFetching, useIsMutating, useQueryClient } from "react-query";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useGetListGroup } from "src/api/group";
 import ChangePasswordModal from "../ChangePasswordModal";
@@ -29,6 +29,8 @@ const Layout = () => {
   const [profileModal, setProfileModal] = useState(false);
   const [changePasswordModal, setChangePasswordModal] = useState(false);
 
+  const queryClient = useQueryClient();
+
   const { data: groupData } = useGetListGroup();
   const isFetching = useIsFetching();
   const isMutating = useIsMutating();
@@ -36,6 +38,7 @@ const Layout = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
+    queryClient.clear();
     navigate("/login");
   };
 
