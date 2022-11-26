@@ -2,16 +2,17 @@ import { CopyOutlined } from "@ant-design/icons";
 import { Input, Modal, notification, Select, Spin, Table, Tag } from "antd";
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useAssignRole, useDetailGroup } from "src/api/group";
+import { useAssignRole, useDetailGroup, useRemoveUser } from "src/api/group";
 import { useGetListUser } from "src/api/user";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
+import { useQueryClient } from "react-query";
+
 const Group = () => {
   const pararms = useParams();
   const auth = useSelector((state) => state.auth);
-  console.log("auth", auth);
-
+  const queryClient = useQueryClient();
   const [user, setUser] = useState({
     role: "member",
   });
@@ -26,12 +27,12 @@ const Group = () => {
     useDetailGroup(pararms.id);
 
   const { isLoading } = useGetListUser();
+  const { mutateAsync: removeUserGroup } = useRemoveUser(pararms.id);
   useEffect(() => {
     if (groupDetailData) {
-      console.log("groupDetailData", groupDetailData.data);
       const temp = groupDetailData.data.user.filter(item => item.id === auth?.user?.id);
       setUser({
-        role: temp[0].role,
+        role: temp[0]?.role ?? "member",
       });
     }
   }, [loadingGroup, auth]);
@@ -144,10 +145,25 @@ const Group = () => {
     });
   };
 
-  const handleRemoveUser = () => {
+  const handleRemoveUser = async() => {
+    const res = await removeUserGroup({ userId: removeUser.id });
+    if (res.errorCode) {
+      return notification.error({
+        message: "Remove failed",
+        description: res.data,
+        duration: 1
+      })
+    }
+    notification.success({
+      message: "Remove successfully",
+      description: "Remove successfully",
+      duration: 1
+    })
+    queryClient.invalidateQueries("group");
     setRemoveUser(null);
     setRemoveUserModal(false);
   };
+  
 
   const handleAssignRole = () => {
     setAssignUser(null);
@@ -176,7 +192,7 @@ const Group = () => {
         rowKey="id"
       />
       <Modal
-        title={"Unblock User"}
+        title={"Remove User"}
         visible={removeUserModal}
         onCancel={() => {
           setRemoveUserModal(false);
@@ -195,17 +211,17 @@ const Group = () => {
           <div className="flex items-center justify-end mt-4">
             <button
               className="button button-danger mr-2 !py-[8px] !min-w-[120px]"
-              onClick={handleRemoveUser}
-            >
-              <span className="!text-[12px]">Cancel</span>
-            </button>
-            <button
-              className="button button-secondary !py-[8px] !min-w-[120px]"
               onClick={() => {
                 setRemoveUserModal(false);
                 setAssignUser(null);
                 setRemoveUser(null);
               }}
+            >
+              <span className="!text-[12px]">Cancel</span>
+            </button>
+            <button
+              className="button button-secondary !py-[8px] !min-w-[120px]"
+              onClick={handleRemoveUser}
             >
               <span className="!text-[12px]">Remove</span>
             </button>
