@@ -13,12 +13,13 @@ const JoinGroupRedirect = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     const handleAccept = async () => {
-      if (token && id) {
+      if (token) {
         const result = await joinGroup();
         if (result?.errorCode) {
           notification.error({
             message: result?.data,
           });
+          navigate(`/`);
         } else {
           notification.success({
             message: result?.data,
@@ -27,13 +28,13 @@ const JoinGroupRedirect = () => {
           navigate(`/group/${result?.data?.id}`);
         }
       } else {
-        window.location.href = "/login";
+        navigate(`/login`);
       }
     };
-    handleAccept();
+    if (id) {
+      handleAccept();
+    }
   }, [id, joinGroup, navigate]);
-
-  return <div>JoinGroupRedirect</div>;
 };
 
 export default JoinGroupRedirect;
