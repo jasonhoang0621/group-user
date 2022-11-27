@@ -4,7 +4,12 @@ import React, { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useDetailGroup, useInviteUser, useRemoveUser, useAssignRole } from "src/api/group";
+import {
+  useDetailGroup,
+  useInviteUser,
+  useRemoveUser,
+  useAssignRole,
+} from "src/api/group";
 import { useGetListUser } from "src/api/user";
 
 const Group = () => {
@@ -43,7 +48,7 @@ const Group = () => {
         role: temp[0]?.role ?? "member",
       });
     }
-  }, [loadingGroup, auth]);
+  }, [loadingGroup, auth, groupDetailData]);
 
   const showRemoveButton = (record) => {
     if (user.role === "owner") {
@@ -134,7 +139,7 @@ const Group = () => {
                   onClick={() => {
                     setAssignUser(record);
                     setAssignUserModal(true);
-                    setRole(record.role)
+                    setRole(record.role);
                   }}
                 >
                   <span className="!text-[12px]">Assign</span>
@@ -309,7 +314,7 @@ const Group = () => {
         onCancel={() => {
           setAssignUserModal(false);
           setAssignUser(null);
-          setRole(null)
+          setRole(null);
         }}
         footer={null}
         destroyOnClose
