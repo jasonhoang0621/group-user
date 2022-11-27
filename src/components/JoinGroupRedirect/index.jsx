@@ -23,14 +23,15 @@ const JoinGroupRedirect = () => {
           notification.success({
             message: result?.data,
           });
-          navigate(`/group/${result?.data?.groupId}`);
+          console.log(result.data);
+          navigate(`/group/${result?.data?.id}`);
         }
       } else {
         window.location.href = "/login";
       }
     };
     handleAccept();
-  }, [id, joinGroup]);
+  }, [id, joinGroup, navigate]);
 
   return <div>JoinGroupRedirect</div>;
 };
