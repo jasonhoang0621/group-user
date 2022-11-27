@@ -1,14 +1,14 @@
 import { CopyOutlined } from "@ant-design/icons";
-import { Input, Modal, notification, Select, Spin, Table, Tag } from "antd";
+import { Input, Modal, notification, Select, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
+  useAssignRole,
   useDetailGroup,
   useInviteUser,
   useRemoveUser,
-  useAssignRole,
 } from "src/api/group";
 import { useGetListUser } from "src/api/user";
 
@@ -35,7 +35,6 @@ const Group = () => {
 
   const { mutateAsync: inviteUser } = useInviteUser(pararms.id);
 
-  const { isLoading } = useGetListUser();
   const { mutateAsync: removeUserGroup } = useRemoveUser(pararms.id);
   const { mutateAsync: assignMember } = useAssignRole(pararms.id);
 
@@ -129,7 +128,7 @@ const Group = () => {
       title: "Action",
       key: "action",
       render: (text, record) => {
-        if (user.id !== record.id) {
+        if (auth?.user?.id !== record.id) {
           return (
             <div className="flex items-center justify-center">
               {showRemoveButton(record)}
@@ -247,7 +246,7 @@ const Group = () => {
   }, [pararms, inviteUser, user]);
 
   return (
-    <Spin spinning={isLoading}>
+    <>
       <div className="flex items-center justify-end mb-5">
         {user.role !== "member" && (
           <>
@@ -418,7 +417,7 @@ const Group = () => {
           </button>
         </div>
       </Modal>
-    </Spin>
+    </>
   );
 };
 
