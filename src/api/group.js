@@ -15,8 +15,8 @@ export const useDetailGroup = (id) => {
   return useQuery(["group", id], () => axiosClient.get(`/group/${id}`));
 };
 
-export const useAssignRole = () => {
-  return useMutation((payload) => axiosClient.post("/assign", payload));
+export const useAssignRole = (groupId) => {
+  return useMutation((payload) => axiosClient.patch(`/group/assign/${groupId}`, payload));
 };
 
 export const useRemoveUser = (groupId) => {
