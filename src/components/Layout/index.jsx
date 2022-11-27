@@ -9,14 +9,12 @@ import {
 } from "@ant-design/icons";
 import React, { useEffect, useState } from "react";
 import { useIsFetching, useIsMutating, useQueryClient } from "react-query";
+import { useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useGetListGroup } from "src/api/group";
 import ChangePasswordModal from "../ChangePasswordModal";
 import CreateGroupModal from "../CreateGroupModal";
 import ProfileModal from "../ProfileModal";
-import { useProfile } from "src/api/user";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "src/redux/auth";
 const { Header, Sider, Content } = LayoutAntd;
 
 const Layout = () => {

@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:3000/api",
+  // baseURL: "http://localhost:3000/api",
+  baseURL: "https://group-user-server.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },
@@ -44,7 +45,7 @@ axiosClient.interceptors.response.use(
       return axiosClient(originalRequest);
     }
     if (error?.response?.status === 400) {
-      return error?.response?.data
+      return error?.response?.data;
     }
   }
 );

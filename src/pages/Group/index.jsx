@@ -227,19 +227,21 @@ const Group = () => {
     <Spin spinning={isLoading}>
       <div className="flex items-center justify-end mb-5">
         {user.role !== "member" && (
-          <button
-            className="button button-danger !py-[8px] !min-w-[120px]"
-            onClick={() => setShareLinkModal(true)}
-          >
-            <span className="!text-[13px]">Create Link</span>
-          </button>
+          <>
+            <button
+              className="button button-danger !py-[8px] !min-w-[120px]"
+              onClick={() => setShareLinkModal(true)}
+            >
+              <span className="!text-[13px]">Create Link</span>
+            </button>
+            <button
+              className="button !py-[8px] !min-w-[120px]"
+              onClick={() => setInviteModal(true)}
+            >
+              <span className="!text-[13px]">Invite</span>
+            </button>
+          </>
         )}
-        <button
-          className="button !py-[8px] !min-w-[120px]"
-          onClick={() => setInviteModal(true)}
-        >
-          <span className="!text-[13px]">Invite</span>
-        </button>
       </div>
       <Table
         columns={columns}
